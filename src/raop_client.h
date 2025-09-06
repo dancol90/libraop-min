@@ -11,6 +11,10 @@
 #ifndef __RAOP_CLIENT_H_
 #define __RAOP_CLIENT_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*--------------- SYNCHRO logic explanation ----------------*/
 
 /*
@@ -171,5 +175,9 @@ struct mdnssd_handle_s;
 
 bool AppleTVpairing(struct mdnssd_handle_s* mDNShandle, char** pUDN, char** pSecret);
 bool AirPlayPassword(struct mdnssd_handle_s* mDNShandle, bool (*excluded)(char* model, char* name), char** UDN, char** passwd);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
