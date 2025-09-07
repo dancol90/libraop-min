@@ -15,22 +15,25 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(alac)
 
-file(GLOB ALAC_SOURCES ${alac_SOURCE_DIR}/codec/*.c)
-add_library(alac STATIC ${ALAC_SOURCES})
-target_include_directories(alac PUBLIC ${alac_SOURCE_DIR}/codec)
+file(
+  GLOB ALAC_SOURCES
+  ${alac_SOURCE_DIR}/codec/*.c
+  ${alac_SOURCE_DIR}/codec/*.cpp
+  ${alac_SOURCE_DIR}/codec/*.h
+)
 
-# --------------------
+add_library(
+  alac OBJECT
+  ${ALAC_SOURCES}
+  src/alac_wrapper/alac_wrapper.h
+  src/alac_wrapper/alac_wrapper.cpp
+)
 
-if (NOT CMAKE_USE_PTHREADS_INIT)
-  add_library(pthread_wrapper STATIC
-    src/pthread_wrapper/pthread.cpp
-    src/pthread_wrapper/pthread.h
-  )
-  target_include_directories(pthread_wrapper PUBLIC src/pthread_wrapper)
-else()
-  add_library(pthread_wrapper INTERFACE)
-  target_link_libraries(pthread_wrapper INTERFACE Threads::Threads)
-endif()
+target_include_directories(
+  alac PUBLIC
+  ${alac_SOURCE_DIR}/codec
+  src/alac_wrapper
+)
 
 # --------------------
 
@@ -41,7 +44,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(crosstools)
 
-add_library(crosstools STATIC
+add_library(
+  crosstools OBJECT
   ${crosstools_SOURCE_DIR}/src/platform.c
   ${crosstools_SOURCE_DIR}/src/platform.h
   ${crosstools_SOURCE_DIR}/src/cross_log.c
@@ -52,11 +56,28 @@ add_library(crosstools STATIC
   ${crosstools_SOURCE_DIR}/src/cross_util.c
 )
 
-target_include_directories(crosstools PUBLIC
+target_include_directories(
+  crosstools PUBLIC
   ${crosstools_SOURCE_DIR}/src
 )
 
-target_link_libraries(crosstools PUBLIC pthread_wrapper)
+target_link_libraries(
+  crosstools PUBLIC
+  Threads::Threads
+)
+
+if (NOT CMAKE_USE_PTHREADS_INIT)
+  target_sources(
+    crosstools PUBLIC
+    src/pthread_wrapper/pthread.cpp
+    src/pthread_wrapper/pthread.h
+  )
+  
+  target_include_directories(
+    crosstools PUBLIC
+    src/pthread_wrapper
+  )
+endif()
 
 # --------------------
 
