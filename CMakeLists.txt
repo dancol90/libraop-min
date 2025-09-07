@@ -90,6 +90,7 @@ add_library(libraop STATIC
   src/raop_client.h
   src/rtsp_client.c
   src/rtsp_client.h
+  src.log.c
 )
 
 target_link_libraries(libraop PUBLIC
@@ -99,9 +100,15 @@ target_link_libraries(libraop PUBLIC
   OpenSSL::SSL
 )
 
+target_include_directories(libraop PUBLIC
+  src
+)
+
 if (WIN32)
   target_link_libraries(libraop PUBLIC wsock32 ws2_32)
 endif()
 
 add_executable(cliraop src/cliraop.c)
 target_link_libraries(cliraop libraop)
+
+# TODO Add install directives
