@@ -171,11 +171,6 @@ bool 	raopcl_sanitize(struct raopcl_s *p);
 
 uint64_t 	raopcl_time32_to_ntp(uint32_t time);
 
-struct mdnssd_handle_s;
-
-bool AppleTVpairing(struct mdnssd_handle_s* mDNShandle, char** pUDN, char** pSecret);
-bool AirPlayPassword(struct mdnssd_handle_s* mDNShandle, bool (*excluded)(char* model, char* name), char** UDN, char** passwd);
-
 #ifdef __cplusplus
 }
 #endif
