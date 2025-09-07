@@ -97,9 +97,11 @@ target_link_libraries(libraop PUBLIC
   alac
   OpenSSL::Crypto
   OpenSSL::SSL
-  wsock32
-  ws2_32
 )
+
+if (WIN32)
+  target_link_libraries(libraop PUBLIC wsock32 ws2_32)
+endif()
 
 add_executable(cliraop src/cliraop.c)
 target_link_libraries(cliraop libraop)
