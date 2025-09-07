@@ -90,7 +90,7 @@ add_library(libraop STATIC
   src/raop_client.h
   src/rtsp_client.c
   src/rtsp_client.h
-  src.log.c
+  src/log.c
 )
 
 target_link_libraries(libraop PUBLIC
